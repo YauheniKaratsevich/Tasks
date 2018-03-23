@@ -1,21 +1,26 @@
 TARGET = hello
 .PHONY: all libs clean
+BIN_C = hello.c
+STAT_LIB_C = libgoodbye.c 
+DYN_LIB_C = libhello.c
 
 all: $(TARGET)
 
 clean:
 	rm -rf $(TARGET) *.o *.a *.so
 
-libgoodbye_stat.a: libgoodbye.c
-	gcc -c -o libgoodbye.o libgoodbye.c
-	ar rc libgoodbye_stat.a libgoodbye.o
+libstat.a: $(STAT_LIB_C)
+	gcc -c -o libstat.o $(STAT_LIB_C)
+	ar rc libstat.a libstat.o
 	
-libhello-dyn.so: libhello.c
-	gcc -fPIC -c -o libhello.o libhello.c
-	gcc -shared -o libhello-dyn.so libhello.o
+libdyn.so: $(DYN_LIB_C)
+	gcc -fPIC -c -o libdyn.o $(DYN_LIB_C)
+	gcc -shared -o libdyn.so libdyn.o
 
-libs: libhello-dyn.so libgoodbye_stat.a
+libs: libdyn.so libstat.a
 
-$(TARGET): libs hello.c
-	gcc -c -o hello.o hello.c
-	gcc hello.o -L. -lgoodbye_stat -lhello-dyn -o $(TARGET) 
+$(TARGET): libs $(BIN_C)
+	gcc -c -o hello.o $(BIN_C)
+	gcc hello.o -L. -lstat -ldyn -o $(TARGET) 
+
+
