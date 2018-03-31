@@ -1,27 +1,54 @@
 #!/bin/bash
 
-# for entry in *
-# do
-# 	echo "$entry"
-# done
+if [[ "$#" -eq 0 ]]; then
+	mode="by_name"
+elif [[ "$#" -eq 1 && "$1" == "name" ]]; then
+	mode="by_name"
+elif [[ "$#" -eq 1 && "$1" == "cont" ]]; then
+	mode="by_cont"
+else
+	echo "Error: invalid arguments"
+	exit 1
+fi
 
-# find . -type f
-
-# find * -type f -printf '%f\n' | sort | uniq -dc
-# find . -type f -printf '%p %f\n'
 IFS=$'\n'
 f=`find . -type f -printf '%p\n'`
-echo "#!/bin/bash" >> log.txt
-for file1 in $f
-do
-	for file2 in $f
+script_file="rm_dups.sh"
+echo "#!/bin/bash" > $script_file
+#-----------------------name-----------------------------------------------
+if [ $mode == "by_name" ]; then
+	echo "##### BY NAME ######" >> $script_file
+	for file1 in $f
 	do
-		if [ "$fille1" != "$file2" ]; then
-			if [ $(basename "$file1") == $(basename "$file2") ]; then		
-				echo "####------------------| $(basename "$file1") |------------------" >> log.txt
-				echo "#rm $file1" >> log.txt
-				echo "#rm $file2" >> log.txt
+		for file2 in $f
+		do
+			if [ "$file1" != "$file2" ]; then	#not file itself
+				if [ $(basename "$file1") == $(basename "$file2") ]; then		
+					printf "%s\n" "####------------------| $(basename "$file1") |------------------" >> $script_file
+					printf "#rm %q\n" "$file1" >> $script_file
+					printf "#rm %q\n" "$file2" >> $script_file
+				fi
 			fi
-		fi
+		done
 	done
-done
+	exit 1
+fi
+
+#-----------------------cont-----------------------------------------------
+if [ $mode == "by_cont" ]; then
+	echo "!!!!! DONE BY CONTENT !!!!!" >> $script_file
+	for file1 in $f
+	do
+		for file2 in $f
+		do
+			if [ "$file1" != "$file2" ]; then	#not file itself
+				if cmp -s "$file1" "$file2"; then		
+					printf "%s\n" "####------------------| $(basename "$file1") |------------------" >> $script_file
+					printf "#rm %q\n" "$file1" >> $script_file
+					printf "#rm %q\n" "$file2" >> $script_file
+				fi
+			fi
+		done
+	done
+	exit 1
+fi
