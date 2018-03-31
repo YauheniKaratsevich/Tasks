@@ -16,10 +16,12 @@ for file1 in $f
 do
 	for file2 in $f
 	do
-		if [ $(basename "$file1") == $(basename "$file2") ]; then		
-			echo "####------------------| $(basename "$file1") |------------------" >> log.txt
-			echo "#rm $file1" >> log.txt
-			echo "#rm $file2" >> log.txt
+		if [ "$fille1" != "$file2" ]; then
+			if [ $(basename "$file1") == $(basename "$file2") ]; then		
+				echo "####------------------| $(basename "$file1") |------------------" >> log.txt
+				echo "#rm $file1" >> log.txt
+				echo "#rm $file2" >> log.txt
+			fi
 		fi
 	done
 done
