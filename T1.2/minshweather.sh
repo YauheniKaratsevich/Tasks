@@ -1,6 +1,7 @@
 #!/bin/bash
 check_wget=`dpkg -s wget | grep "Status"`
-
+check_sed=`dpkg -s sed | grep "Status"`
+check_grep=`dpkg -s grep | grep "Status"`
 if [ -n "$check_wget" ]; then
 	while [ 1 ]
 	do
@@ -12,5 +13,5 @@ if [ -n "$check_wget" ]; then
 		sleep $var
 	done
 else
-	echo "wget not installed. Pls, do sudo apt-get install wget"
+	echo "wget, sed or grep are  not installed. Pls, do sudo apt-get install wget sed grep"
 fi	
