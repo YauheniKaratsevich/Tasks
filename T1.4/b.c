@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+//this process just return data from stdin
 int main( void ) {
-	int in;
-	while( 1 ) {
-		in = getchar();
-		putchar(in);	
-	}
+	char str[20];
+//	while( 1 ) {
+		scanf("%s", str);
+		printf("Received data is %s", str);
+//	}
 	return 0;
 }

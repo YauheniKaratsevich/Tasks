@@ -2,15 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
-
+//this process just get data and transfer to a pipe
 int main( void ) {
-	int in;
-	while( 1 ) {
-		// printf("A: %d \n", (int)getpid());
-		// sleep( 1 );
-		in = getchar();
-		putchar(in);		
-	}
+	
+//	while( 1 ) {
+		printf("Hello_world!\n");	
+//	}
 	return 0;
 }

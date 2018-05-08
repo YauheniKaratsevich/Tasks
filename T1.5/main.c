@@ -15,16 +15,12 @@
 
  	pid_t pid_a = fork();
  	if( pid_a == 0 ) {
- 		dup2(pipefd[WRITE_END], STDOUT_FILENO);
- 		close(pipefd[READ_END]);
- 		execv("./a", arg );
+ 		execv("./a", (char *)(pipefd) );
  	}
 
  	pid_t pid_b = fork();
  	if( pid_b == 0 ) {
- 	 	dup2(pipefd[READ_END], STDIN_FILENO);
- 	 	close(pipefd[WRITE_END]);
- 	 	execvp("./b", arg );
+ 	 	execvp("./b", (char *)(pipefd) );
  	 }
 	
 	//wait( NULL );
